@@ -1,6 +1,6 @@
 import pandas as pd
-
-df = pd.read_csv('movie_metadata.csv')
+if __name__ == '__main__':
+    df = pd.read_csv('movie_metadata.csv')
 
 # Color: blanks to "color"
 df['color'] = df['color'].replace(['NaN', 'nan', None],'Color')

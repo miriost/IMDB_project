@@ -24,10 +24,18 @@ def clean(df):
     df['actor_1_facebook_likes'] = df['actor_3_facebook_likes'].replace([None], 0)
     df['cast_total_facebook_likes'] = df['cast_total_facebook_likes'].replace([None], 0)
     df['movie_facebook_likes'] = df['movie_facebook_likes'].replace([None], 0)
+    # unknown money values
+    df['gross'] = df['movie_facebook_likes'].replace([None], 0)
+    df['budget'] = df['movie_facebook_likes'].replace([None], 0)
+    #clean TV shows
+    df = df[df['content_rating'].str.contains("TV") != True]
+    df = df[pd.notnull(df['title_year'])]
+
+
     # Move Genres to single boolean features: histogram of genres, see which are N most common, split to new feats
     genres = df['genres'].str.split('|', expand=True)
     mostCommonGenres = list(genres.stack().value_counts().head(5).index)
     for genre in mostCommonGenres:
-     df['is' + genre] = df.apply(lambda x: isgenre(genre, x['genres']),axis=1)
+        df['is' + genre] = df.apply(lambda x: isgenre(genre, x['genres']),axis=1)
     return df
 #print(df['isAction'])

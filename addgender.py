@@ -2,7 +2,7 @@
 USING GENDER API TO ANALYZE GENDERS ACCORDING TO THE FIRST NAMES OF DIRECTORS AND ACTORS
 https://gender-api.com/en/api-docs
 '''
-print("Hello!")
+
 import json
 from urllib.request import urlopen
 import pandas as pd

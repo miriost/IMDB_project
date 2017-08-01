@@ -4,38 +4,56 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
-from cleandata import clean
-from currencyConvert import fixcurrency
 
-df = pd.read_csv('movie_metadata.csv')
-#df = clean(df)
-#df = fixcurrency(df)
-# plt.subplot(211)
-# #
-# years = list(range(int(min(df['title_year'][~np.isnan(df['title_year'])])),
-#                    int(max(df['title_year'][~np.isnan(df['title_year'])]))))
-# sns.distplot(df['title_year'][~np.isnan(df['title_year'])])
-# plt.title('Title year histogram')
-# plt.xlim(1900, 2020)
-#
-#
-# # according to the simple year histogram we can note that we mainly deal with new films
-#
-# # movie facebook likes as a correlation to the year
-# import ipdb
-# #ipdb.set_trace()
-#
-# likes = np.zeros(len(years))
-# for i in range(0, len(years)):
-#     likes[i] = df['movie_facebook_likes'][df['title_year']==years[i]].mean()
-# plt.subplot(212)
-# plt.scatter(years, likes)
-# plt.title('Average number of facebook likes over the years')
-# plt.xlim(1900, 2020)
-# plt.ylim(-1, max(likes)+1e3)
-# plt.plot([2004, 2004], plt.ylim(), 'r')
-# plt.legend(['facebook invention','Average likes'], loc = 'upper left')
-# plt.show()
+
+def facebook_likes_over_the_years(df):
+    plt.subplot(211)
+    years = list(range(int(min(df['title_year'][~np.isnan(df['title_year'])])),
+                   int(max(df['title_year'][~np.isnan(df['title_year'])]))))
+    sns.distplot(df['title_year'][~np.isnan(df['title_year'])])
+    plt.title('Title year histogram')
+    plt.xlim(1900, 2020)
+    plt.xlabel('')
+    plt.ylabel('Frequency')
+
+    import ipdb
+    #ipdb.set_trace()
+
+    likes = np.zeros(len(years))
+    for i in range(0, len(years)):
+        likes[i] = df['movie_facebook_likes'][df['title_year']==years[i]].mean()
+    plt.subplot(212)
+    plt.scatter(years, likes)
+    plt.title('Average number of facebook likes over the years')
+    plt.xlim(1900, 2020)
+    plt.ylim(-1, max(likes)+1e3)
+    plt.plot([2006, 2006], plt.ylim(), 'r')
+    plt.legend(['facebook invention','Average likes'], loc = 'upper left')
+    plt.xlabel('Title year')
+    plt.show()
+
+def facebook_likes_to_score(df):
+    np.random.seed(19680801)
+    colors = np.random.rand(len(df['imdb_score']))
+    plt.scatter(df['imdb_score'], df['movie_facebook_likes'], c=colors, alpha=0.5)
+    plt.title('Facebook likes vs. score')
+    plt.xlabel('IMDB score')
+    plt.ylabel('Number of facebook likes')
+    plt.ylim(-1000, max(df['movie_facebook_likes'])+1000)
+    plt.show()
+
+def budget_to_score(df):
+    np.random.seed(19680801)
+    colors = np.random.rand(len(df['imdb_score']))
+    ratio = np.divide(df['gross'],df['budget'])
+    print(ratio)
+    plt.scatter(df['imdb_score'], ratio, c=colors, alpha=0.5)
+    plt.title('Gross/Budget vs. score')
+    plt.xlabel('IMDB score')
+    plt.ylabel('Gross/bugdet ratio')
+    plt.ylim(min(ratio), max(ratio))
+    plt.show()
+
 
 # Which movies are blockbusters?
 # 3 categories - 1. High profit movie - we will decide this according to the gross column
@@ -59,18 +77,18 @@ df = pd.read_csv('movie_metadata.csv')
 # bins = [10, 100, 200, 300, 1000, 10000, 100000]
 # sns.distplot(budg, hist=True, bins= bins)
 # plt.show()
-df['budget [Millions]'] = df['budget']/1e6
-df.sort_values(by='budget [Millions]',ascending=False, inplace=True)
-
-fig, ax = plt.subplots(1,2,figsize=(8, 3))
-
-#sns.distplot(df['budget [Millions]'].values,bins=8,kde=False,ax=ax[0])
-#ax[0].set_title('Linear Bins')
-
-LogMin, LogMax = np.log10(df['budget [Millions]'].min()),np.log10(df['budget [Millions]'].max())
-newBins = np.logspace(LogMin, LogMax,8)
-sns.distplot(df['budget [Millions]'].values,bins=newBins,kde=False,ax=ax[1])
-ax[1].set_xscale('log')
-ax[1].set_title('Log Bins')
-
-fig.show()
+# df['budget [Millions]'] = df['budget']/1e6
+# df.sort_values(by='budget [Millions]',ascending=False, inplace=True)
+#
+# fig, ax = plt.subplots(1,2,figsize=(8, 3))
+#
+# #sns.distplot(df['budget [Millions]'].values,bins=8,kde=False,ax=ax[0])
+# #ax[0].set_title('Linear Bins')
+#
+# LogMin, LogMax = np.log10(df['budget [Millions]'].min()),np.log10(df['budget [Millions]'].max())
+# newBins = np.logspace(LogMin, LogMax,8)
+# sns.distplot(df['budget [Millions]'].values,bins=newBins,kde=False,ax=ax[1])
+# ax[1].set_xscale('log')
+# ax[1].set_title('Log Bins')
+#
+# fig.show()

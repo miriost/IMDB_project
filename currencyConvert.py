@@ -9,15 +9,19 @@ def convert(currencies, country, val, year):
     if country == 'USA':
         return val
     try:
-        return val*currencies[currencies['Country Name'].str.match(country)][str(year)].iloc[0]
+        return val/currencies[currencies['Country Name'].str.match(country)][str(year)].iloc[0]
     except: # fails with countries like Soviet Union
         pass
 
 
-def inflate(infaltions,val, year):
-    if year < 1960:
+def inflate(infaltions,val, title_year):
+    if title_year < 1960:
         return -999 # TODO how to return error codes?
-    return infaltions[str(year)].iloc[0]*val
+    multiplication_factor = 1
+    for year in range(title_year, 2016):
+        multiplication_factor *= (100 + infaltions[str(year)].iloc[0]) / 100
+    return val*multiplication_factor
+
 
 
 def fixcurrency(df):
@@ -29,6 +33,6 @@ def fixcurrency(df):
 if __name__ == '__main__':
     df = pd.read_csv('movie_metadata.csv')
     country = 'Israel' # for testing
-    year = 2016
-    print('The value is: ' + str(convert(currencies, country, 1*inflate(year), year)))
-
+    year = 2010
+    value = 1000
+    print(inflate(inflations, val = value, title_year=year))

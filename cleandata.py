@@ -31,11 +31,5 @@ def clean(df):
     df = df[df['content_rating'].str.contains("TV") != True]
     df = df[pd.notnull(df['title_year'])]
 
-
-    # Move Genres to single boolean features: histogram of genres, see which are N most common, split to new feats
-    genres = df['genres'].str.split('|', expand=True)
-    mostCommonGenres = list(genres.stack().value_counts().head(5).index)
-    for genre in mostCommonGenres:
-        df['is' + genre] = df.apply(lambda x: isgenre(genre, x['genres']),axis=1)
     return df
 #print(df['isAction'])

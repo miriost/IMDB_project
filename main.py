@@ -7,6 +7,7 @@ from sklearn.model_selection import train_test_split
 from cleandata import clean
 from currencyConvert import fixcurrency
 import basic_correlations as eda
+import regressions as reg
 import numpy as np
 
 
@@ -14,7 +15,6 @@ df = pd.read_csv('movie_metadata.csv')
 df = clean(df)
 df = fixcurrency(df)
 
-<<<<<<< HEAD
 # show feature correlation
 selectedFeatures = ['imdb_score',
                     'director_facebook_likes',
@@ -34,7 +34,6 @@ sns.heatmap(df[selectedFeatures].corr())
 plt.yticks(rotation=0)
 plt.xticks(rotation=70)
 plt.show()
-=======
 # EDA part:
 #eda.facebook_likes_over_the_years(df)
 
@@ -54,4 +53,5 @@ plt.show()
 eda.budget_to_score(df)
 
 
->>>>>>> master
+# Regressions parts
+reg.doForestRegression(df, selectedFeatures)

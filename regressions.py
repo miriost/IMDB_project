@@ -28,25 +28,6 @@ def doLassoRegression(df, features):
     plt.ylabel('Predicted')
     plt.show()
 
-def doLassoRegression(df, features):
-    X_train, X_test, y_train, y_test = train_test_split(
-        df[features].drop('imdb_score', axis='columns').dropna(), df.dropna(subset=features, axis=0)['imdb_score'],
-        test_size=0.3,
-        random_state=777)
-    lasso = LassoCV(normalize=True, copy_X=True, positive=True)
-    lasso.fit(X_train, y_train)
-    print('Alpha: %s' % lasso.alpha_)
-    print('Train R^2: %s' % lasso.score(X_train, y_train))
-    print('Test R^2: %s' % lasso.score(X_test, y_test))
-    plt.scatter(y_test, lasso.predict(X_test))
-    plt.plot([y_test.min(), y_test.max()], [y_test.min(), y_test.max()], 'k--', lw=4)
-    plt.xscale('log')
-    plt.yscale('log')
-    plt.grid(True)
-    plt.title('Residual plot')
-    plt.xlabel('Measured')
-    plt.ylabel('Predicted')
-    plt.show()
 
 def doForestRegression(df, features):
     X_train, X_test, y_train, y_test = train_test_split(
@@ -83,4 +64,3 @@ if __name__ == '__main__':
                         'gross',
                         'budget']
     doLassoRegression(df, selectedFeatures)
-    

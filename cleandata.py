@@ -3,12 +3,6 @@ if __name__ == '__main__':
     df = pd.read_csv('movie_metadata.csv')
 
 
-def isgenre(genre, genresList):
-    if genre in genresList.split('|'):
-        return True
-    else:
-        return False
-
 
 def clean(df):
     # Color: blanks to "color"

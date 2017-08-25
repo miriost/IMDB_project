@@ -40,6 +40,8 @@ def showPca(X_std):
     plt.xlabel('Number of components')
     plt.ylabel('Cumulative explained variance')
     plt.title('#PCA of selected features')
+    plt.show()
+
 
 def calcerror(predict, test):
     error = 0

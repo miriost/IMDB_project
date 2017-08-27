@@ -1,9 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-from sklearn.linear_model import LassoCV, Lasso
-from sklearn.ensemble import RandomForestRegressor
-from sklearn.model_selection import train_test_split
 from cleandata import clean
 from currencyConvert import fixcurrency
 import basic_correlations as eda
@@ -59,5 +56,23 @@ eda.facebook_likes_to_score(df)
 eda.budget_to_score(df)
 
 # Regressions parts
-reg.doForestRegression(df, selectedFeatures)
+
+# reg.doForestRegression(df, selectedFeatures)
+x_train, x_test, y_train, y_test = reg.createtesttrain(df, selectedFeatures, 6)
+reg.showPca(x_train)
+plt.show()
+[ridge_test_error, ridge_train_error] = reg.doRidgeRegression(df, selectedFeatures)
+[knn_test_error, knn_train_error] = reg.doKnnRegression(df, selectedFeatures, 5)
+[bayes_test_error, bayes_train_error] = reg.doBayesianRegression(df, selectedFeatures)
+[svm_test_error, svm_train_error] = reg.doSvmRegression(df, selectedFeatures)
+[tree_test_error, tree_train_error] = reg.doDecisionTreeRegression(df, selectedFeatures)
+
+train_error = [ridge_train_error, knn_train_error, bayes_train_error, svm_train_error, tree_train_error]
+test_error = [ridge_test_error, knn_test_error, bayes_test_error, svm_test_error, tree_test_error]
+
+col = {'Train Error': train_error,'Test Error': test_error}
+models = ['Ridge Regression', 'Knn', 'Bayesian Regression', 'SVM', 'Decision Tree']
+errors = pd.DataFrame(data=col, index=models)
+errors.plot(kind='bar')
+plt.show()
 

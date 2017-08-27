@@ -5,12 +5,16 @@ from cleandata import clean
 from currencyConvert import fixcurrency
 import basic_correlations as eda
 import regressions as reg
+from names_DB_analysis import add_genders
 import numpy as np
 
 
 df = pd.read_csv('movie_metadata.csv')
 df = clean(df)
 df = fixcurrency(df)
+# Add gender columns for director and 3 main actors
+df= add_genders(df)
+#print(df[['actor_1_name', 'actor_1_gender']].head(100))
 
 # show feature correlation
 selectedFeatures = ['imdb_score',
@@ -31,6 +35,7 @@ sns.heatmap(df[selectedFeatures].corr())
 plt.yticks(rotation=0)
 plt.xticks(rotation=70)
 plt.show()
+
 # EDA part:
 eda.facebook_likes_over_the_years(df)
 
@@ -51,6 +56,7 @@ eda.facebook_likes_to_score(df)
 eda.budget_to_score(df)
 
 # Regressions parts
+
 # reg.doForestRegression(df, selectedFeatures)
 x_train, x_test, y_train, y_test = reg.createtesttrain(df, selectedFeatures, 6)
 reg.showPca(x_train)
@@ -69,3 +75,4 @@ models = ['Ridge Regression', 'Knn', 'Bayesian Regression', 'SVM', 'Decision Tre
 errors = pd.DataFrame(data=col, index=models)
 errors.plot(kind='bar')
 plt.show()
+

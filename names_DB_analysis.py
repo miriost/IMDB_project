@@ -3,10 +3,12 @@
 import pandas as pd
 import csv
 
-df = pd.read_csv('movie_metadata.csv')
-problematic_names_dictionary = {}
+#df = pd.read_csv('movie_metadata.csv')
+names = pd.read_csv('names_DB.csv')
+names_dict = dict(zip(names['Name'], names['prob.gender']))
+#problematic_names_dictionary = {}
 
-def extract_first_name(name):
+def extract_first_name_gender(name):
 
     if not str or not(isinstance(name, str)):
         return 'Unknown'
@@ -15,12 +17,12 @@ def extract_first_name(name):
         try:
             first_name.encode('ascii')
         except UnicodeEncodeError:
-            add_name_to_problematic_DB(first_name)
-            print(first_name + ' added to problematic names and skipped (ascii)!')
+            #add_name_to_problematic_DB(first_name)
+            #print(first_name + ' added to problematic names and skipped (ascii)!')
             return ('Skipped')
         else:
-            gender = extract_gender(first_name)
-            print('first name: ' + first_name + ' gender: ' + gender)
+            gender = get_gender(first_name)
+            #print('first name: ' + first_name + ' gender: ' + gender)
             return (gender)
 
 def add_name_to_problematic_DB(first_name):
@@ -30,29 +32,27 @@ def add_name_to_problematic_DB(first_name):
         writer.writerow([first_name])
         # to do: add the row numbers from which the name came, check if the value already exists.
 
-
-def extract_gender(first_name):
-    with open('names_DB.csv', 'rt') as f:
-        reader = csv.reader(f, delimiter = ',')
-        for row in reader:
-            if first_name == row[0]:  # search the first name ijn the first column of the file
-                if row[4] != "Unknown":
-                    return(row[4])
-                else:
-                    add_name_to_problematic_DB(first_name)
-                    print(first_name + ' added to problematic names and skipped (Returned: unknown)')
-                    return ('Skipped')
-        # if you reached the end of the file and you still haven't found the name:
-        add_name_to_problematic_DB(first_name)
-        print(first_name + ' added to problematic names and skipped (Not found in DB)!')
-        return('Skipped')
+def get_gender(name):
+    if name in names_dict:
+        return(names_dict[name])
+    else:
+        return('Unknown')
 
 
+def add_genders(df):
+    """
+    :type df: object
+    """
+    #names = pd.read_csv('names_DB.csv')
+    #names_dict = dict(zip(names['Name'], names['prob.gender']))
+    cols = ['actor_1_', 'actor_2_', 'actor_3_', 'director_']
+    for feature in cols:
+        df[feature+'gender'] = df[feature+'name'].apply(extract_first_name_gender)
+
+    return df
 
 
-df['actor1_gender'] = df['actor_1_name'].apply(extract_first_name)
 
-#first_names = df['director_name'][1:10]
-
-# first_names = first_names.split(str = '')
-
+#add_genders(df)
+#df['actor_1_gender'] = df['actor_1_name'].apply(extract_first_name_gender)
+#print(df[['actor_1_name', 'actor_1_gender']].head(100))

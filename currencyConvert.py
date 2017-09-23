@@ -25,7 +25,7 @@ def inflate(infaltions,val, title_year):
 
 
 def fixcurrency(df):
-    for feature in ['gross','budget']:
+    for feature in ['gross', 'budget']:
         df[feature] = df.apply(lambda x: convert(currencies, x['country'], x[feature], int(x['title_year'])), axis=1)
         df[feature] = df.apply(lambda x: inflate(inflations, x[feature], int(x['title_year'])), axis=1)
     return df

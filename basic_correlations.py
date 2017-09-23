@@ -45,38 +45,56 @@ def budget_to_score(df):
     np.random.seed(19680801)
     colors = np.random.rand(len(df['imdb_score']))
     ratio = np.divide(df['gross'], df['budget'])
-    print(ratio)
+#    print(ratio)
     plt.scatter(df['imdb_score'], ratio, c=colors, alpha=0.5)
+    ax = plt.gca()
+    ax.set_yscale('log')
     plt.title('Gross/Budget vs. score')
     plt.xlabel('IMDB score')
     plt.ylabel('Gross/bugdet ratio')
     plt.ylim(min(ratio), max(ratio))
     plt.show()
 
-# Which movies are blockbusters?
-# 3 categories - 1. High profit movie - we will decide this according to the gross column
-# 2. High ratio of budget/gross - would indicate 2 categories - low budget movies that earned a
-# lot more than they cost, and just good ROI movies
+def is_blockbuster(df):
+    # Which movies are blockbusters?
+    # 3 categories - 1. High profit movie - we will decide this according to the gross column
+    # 2. High ratio of budget/gross - would indicate 2 categories - low budget movies that earned at least 3 times more
+    # more than they cost, and just good ROI movies -
 
-# First let's the histogram of budgets, and gross
-# print(df['gross'])
+    # First let's the histogram of gross
+    # print(df['gross'])
+    gross_sorted = df['gross'].sort_values(ascending=False, inplace=False)
+    sns.distplot(gross_sorted.dropna())
+    plt.title('Gross sorted')
+    df['is blockbuster'] = df['gross']
+    plt.show()
+    # accroding to the histogram, we choose the high gross value to be 200 million and above
+    df['is blockbuster'] = df['gross'] > 0.2e9
+    print(['number of high gross movies = ', sum(df['is blockbuster'])])
 
-# g = sns.JointGrid('budget', 'gross', df)
-# g.plot_marginals(sns.distplot, hist=True, kde=True, color='blue')
-# g.plot_joint(plt.scatter, color='black', edgecolor='black')
-# ax = g.ax_joint
-# ax.set_xscale('log')
-# ax.set_yscale('log')
-# g.ax_marg_x.set_xscale('log')
-# g.ax_marg_y.set_yscale('log')
-# plt.show()
-# plt.figure()
-# budg = df['budget']/1e6
-# bins = [10, 100, 200, 300, 1000, 10000, 100000]
-# sns.distplot(budg, hist=True, bins= bins)
-# plt.show()
-# df['budget [Millions]'] = df['budget']/1e6
-# df.sort_values(by='budget [Millions]',ascending=False, inplace=True)
+    ratio = np.divide(df['gross'], df['budget'], out=np.zeros(len(df['gross'])), where=df['budget'] != 0)
+    ratio_sorted = ratio.sort()
+    sns.distplot(ratio_sorted)
+    plt.title('Gross/Budget sorted')
+    plt.show()
+
+
+    #g = sns.JointGrid(x = 'budget', y = 'gross', data = df)
+    #g.plot_marginals(sns.distplot, hist=True, kde=True, color='blue')
+    #g.plot_joint(plt.scatter, color='black', edgecolor='black')
+    #ax = g.ax_joint
+    #x.set_xscale('log')
+    # ax.set_yscale('log')
+    # g.ax_marg_x.set_xscale('log')
+    # g.ax_marg_y.set_yscale('log')
+    # plt.show()
+    # plt.figure()
+    # budg = df['budget']/1e6
+    # bins = [10, 100, 200, 300, 1000, 10000, 100000]
+    # sns.distplot(budg, hist=True, bins= bins)
+    # plt.show()
+    df['budget [Millions]'] = df['budget']/1e6
+    # df.sort_values(by='budget [Millions]',ascending=False, inplace=True)
 #
 # fig, ax = plt.subplots(1,2,figsize=(8, 3))
 #
@@ -90,3 +108,12 @@ def budget_to_score(df):
 # ax[1].set_title('Log Bins')
 #
 # fig.show()
+
+def gender_vs_score(df):
+    plt.subplot(121)
+    sns.boxplot(x = df['actor_1_gender'][df['actor_1_gender'].isin(['Male', 'Female'])], y = 'imdb_score', data = df)
+    plt.title('Actor 1 gender vs. score')
+    plt.subplot(122)
+    sns.boxplot(x = df['director_gender'][df['director_gender'].isin(['Male', 'Female'])], y = 'imdb_score', data = df)
+    plt.title('Director vs. score')
+    plt.show()

@@ -17,7 +17,9 @@ df= add_genders(df)
 #print(df[['actor_1_name', 'actor_1_gender']].head(100))
 
 # show feature correlation
-selectedFeatures = ['imdb_score',
+selectedFeatures = ['imdb'
+                    ''
+                    '_score',
                     'director_facebook_likes',
                     'num_critic_for_reviews',
                     'num_voted_users',
@@ -54,6 +56,8 @@ eda.facebook_likes_to_score(df)
 # print(df['movie_title'][amax] + ' ;' + df['country'][amax] + ' ;' + str(df['budget'][amax]))
 
 eda.budget_to_score(df)
+eda.is_blockbuster(df)
+eda.gender_vs_score(df)
 
 # Regressions parts
 

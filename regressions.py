@@ -60,7 +60,7 @@ def doRidgeRegression(df, features):
 
     prediction = model.predict(x_test)
     test_error = calcerror(prediction, y_test)
-    print("Test error = "'{}'.format(test_error) + " percent in Ridge Regression")
+    print("Test error = "'{}'.format(test_error) + " percent in Ridge Regression\n")
     return train_error, test_error
 
 
@@ -75,7 +75,7 @@ def doKnnRegression(df, features, n_neighbors):
 
     prediction = model.predict(x_test)
     test_error = calcerror(prediction, y_test)
-    print("Test error = "'{}'.format(test_error) + " percent in KNN Regression")
+    print("Test error = "'{}'.format(test_error) + " percent in KNN Regression\n")
     return train_error, test_error
 
 
@@ -90,7 +90,7 @@ def doBayesianRegression(df, features):
 
     prediction = model.predict(x_test)
     test_error = calcerror(prediction, y_test)
-    print("Test error = "'{}'.format(test_error) + " percent in Bayesian Regression")
+    print("Test error = "'{}'.format(test_error) + " percent in Bayesian Regression\n")
     return train_error, test_error
 
 
@@ -105,7 +105,7 @@ def doDecisionTreeRegression(df, features):
 
     prediction = model.predict(x_test)
     test_error = calcerror(prediction, y_test)
-    print("Test error = "'{}'.format(test_error) + " percent in Decision Tree  Regression")
+    print("Test error = "'{}'.format(test_error) + " percent in Decision Tree  Regression\n")
     return train_error, test_error
 
 
@@ -120,7 +120,7 @@ def doSvmRegression(df, features):
 
     prediction = model.predict(x_test)
     test_error = calcerror(prediction, y_test)
-    print("Test error = "'{}'.format(test_error) + " percent in SVM  Regression")
+    print("Test error = "'{}'.format(test_error) + " percent in SVM  Regression\n")
     return train_error, test_error
 
 
@@ -134,8 +134,6 @@ if __name__ == '__main__':
                         'duration',
                         'cast_total_facebook_likes',
                         'actor_1_facebook_likes',
-                        'actor_2_facebook_likes',
-                        'actor_3_facebook_likes',
                         'movie_facebook_likes',
                         'facenumber_in_poster',
                         'gross',

@@ -19,8 +19,8 @@ def clean(df):
     df['cast_total_facebook_likes'] = df['cast_total_facebook_likes'].replace([None], 0)
     df['movie_facebook_likes'] = df['movie_facebook_likes'].replace([None], 0)
     # unknown money values
-    df['gross'] = df['movie_facebook_likes'].replace([None], 0)
-    df['budget'] = df['movie_facebook_likes'].replace([None], 0)
+    df['gross'] = df['gross'].replace([None], 0)
+    df['budget'] = df['budget'].replace([None], 0)
     #clean TV shows
     df = df[df['content_rating'].str.contains("TV") != True]
     df = df[pd.notnull(df['title_year'])]

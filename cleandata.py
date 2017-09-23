@@ -15,7 +15,7 @@ def clean(df):
     df['director_facebook_likes'] = df['director_facebook_likes'].replace([None], 0)
     df['actor_1_facebook_likes'] = df['actor_1_facebook_likes'].replace([None], 0)
     df['actor_2_facebook_likes'] = df['actor_2_facebook_likes'].replace([None], 0)
-    df['actor_1_facebook_likes'] = df['actor_3_facebook_likes'].replace([None], 0)
+    df['actor_3_facebook_likes'] = df['actor_3_facebook_likes'].replace([None], 0)
     df['cast_total_facebook_likes'] = df['cast_total_facebook_likes'].replace([None], 0)
     df['movie_facebook_likes'] = df['movie_facebook_likes'].replace([None], 0)
     # unknown money values

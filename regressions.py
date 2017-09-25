@@ -46,8 +46,20 @@ def showPca(X_std):
 def calcerror(predict, test):
     error = 0
     for i in range(len(test)):
-        error += (abs(test[i] - predict[i]) / test[i])
+        try:
+            error += (abs(test[i] - predict[i]) / test[i])
+        except Exception:
+            print("failed at iteration " + i)
+            pass
+            raise
     return error / len(test) * 100
+
+def randomscore(df):
+    #x_train, x_test, y_train, y_test = createtesttrain(df, features, 6)
+    test_error = calcerror(np.random.normal(df['imdb_score'].mean(), df['imdb_score'].var(), len(df['imdb_score'])+1), list(df['imdb_score']))
+    print("Test error = "'{}'.format(test_error) + " percent in Random scores\n")
+    return test_error
+
 
 def doRidgeRegression(df, features):
     x_train, x_test, y_train, y_test = createtesttrain(df, features, 6)

@@ -6,6 +6,7 @@ from currencyConvert import fixcurrency
 import basic_correlations as eda
 import regressions as reg
 from names_DB_analysis import add_genders
+import features
 import numpy as np
 
 
@@ -15,11 +16,11 @@ df = fixcurrency(df)
 # Add gender columns for director and 3 main actors
 df= add_genders(df)
 #print(df[['actor_1_name', 'actor_1_gender']].head(100))
+df = features.addgenres(df)
+df = features.is_blockbuster(df)
 
 # show feature correlation
-selectedFeatures = ['imdb'
-                    ''
-                    '_score',
+selectedFeatures = ['imdb_score',
                     'director_facebook_likes',
                     'num_critic_for_reviews',
                     'num_voted_users',
@@ -30,6 +31,7 @@ selectedFeatures = ['imdb'
                     'actor_3_facebook_likes',
                     'movie_facebook_likes',
                     'facenumber_in_poster',
+                    'is_blockbuster',
                     'gross',
                     'budget']
 
@@ -56,7 +58,6 @@ eda.facebook_likes_to_score(df)
 # print(df['movie_title'][amax] + ' ;' + df['country'][amax] + ' ;' + str(df['budget'][amax]))
 
 eda.budget_to_score(df)
-eda.is_blockbuster(df)
 eda.gender_vs_score(df)
 
 # Regressions parts
@@ -70,6 +71,8 @@ plt.show()
 [bayes_test_error, bayes_train_error] = reg.doBayesianRegression(df, selectedFeatures)
 [svm_test_error, svm_train_error] = reg.doSvmRegression(df, selectedFeatures)
 [tree_test_error, tree_train_error] = reg.doDecisionTreeRegression(df, selectedFeatures)
+randomscore_test = reg.randomscore(df)
+
 
 train_error = [ridge_train_error, knn_train_error, bayes_train_error, svm_train_error, tree_train_error]
 test_error = [ridge_test_error, knn_test_error, bayes_test_error, svm_test_error, tree_test_error]

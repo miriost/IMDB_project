@@ -4,6 +4,7 @@ import matplotlib as mpl
 import matplotlib.pyplot as plt
 import seaborn as sns
 import numpy as np
+import numpy as np
 
 
 def facebook_likes_over_the_years(df):
@@ -44,57 +45,21 @@ def facebook_likes_to_score(df):
 def budget_to_score(df):
     np.random.seed(19680801)
     colors = np.random.rand(len(df['imdb_score']))
-    ratio = np.divide(df['gross'], df['budget'])
+    ratio = np.divide(df['gross'], df['budget'], out=np.zeros(len(df['gross'])), where=(df['budget'].replace([None], 0) != 0))
+    # for i in range(0,5000,100):
+    #     print(['gross= ',list(df['gross'])[i], ' budget= ', list(df['budget'])[i], ' ratio= ', list(ratio)[i]])
 #    print(ratio)
-    plt.scatter(df['imdb_score'], ratio, c=colors, alpha=0.5)
+    plt.scatter(df['imdb_score'][ratio>0], ratio[ratio>0], c=colors[ratio>0], alpha=0.5)
+    plt.plot([0, df['imdb_score'].max()],[5,5], 'r')
     ax = plt.gca()
-    ax.set_yscale('log')
+    #ax.set_yscale('log')
     plt.title('Gross/Budget vs. score')
     plt.xlabel('IMDB score')
     plt.ylabel('Gross/bugdet ratio')
-    plt.ylim(min(ratio), max(ratio))
-    plt.show()
-
-def is_blockbuster(df):
-    # Which movies are blockbusters?
-    # 3 categories - 1. High profit movie - we will decide this according to the gross column
-    # 2. High ratio of budget/gross - would indicate 2 categories - low budget movies that earned at least 3 times more
-    # more than they cost, and just good ROI movies -
-
-    # First let's the histogram of gross
-    # print(df['gross'])
-    gross_sorted = df['gross'].sort_values(ascending=False, inplace=False)
-    sns.distplot(gross_sorted.dropna())
-    plt.title('Gross sorted')
-    df['is blockbuster'] = df['gross']
-    plt.show()
-    # accroding to the histogram, we choose the high gross value to be 200 million and above
-    df['is blockbuster'] = df['gross'] > 0.2e9
-    print(['number of high gross movies = ', sum(df['is blockbuster'])])
-
-    ratio = np.divide(df['gross'], df['budget'], out=np.zeros(len(df['gross'])), where=df['budget'] != 0)
-    ratio_sorted = ratio.sort()
-    sns.distplot(ratio_sorted)
-    plt.title('Gross/Budget sorted')
+    plt.ylim(min(ratio), 30)
     plt.show()
 
 
-    #g = sns.JointGrid(x = 'budget', y = 'gross', data = df)
-    #g.plot_marginals(sns.distplot, hist=True, kde=True, color='blue')
-    #g.plot_joint(plt.scatter, color='black', edgecolor='black')
-    #ax = g.ax_joint
-    #x.set_xscale('log')
-    # ax.set_yscale('log')
-    # g.ax_marg_x.set_xscale('log')
-    # g.ax_marg_y.set_yscale('log')
-    # plt.show()
-    # plt.figure()
-    # budg = df['budget']/1e6
-    # bins = [10, 100, 200, 300, 1000, 10000, 100000]
-    # sns.distplot(budg, hist=True, bins= bins)
-    # plt.show()
-    df['budget [Millions]'] = df['budget']/1e6
-    # df.sort_values(by='budget [Millions]',ascending=False, inplace=True)
 #
 # fig, ax = plt.subplots(1,2,figsize=(8, 3))
 #

@@ -27,10 +27,13 @@ def is_blockbuster(df):
 
     # First let's the histogram of gross
     # print(df['gross'])
+    sns.set(style="whitegrid")
+    sns.set_palette("husl")
     gross_sorted = df['gross'].sort_values(ascending=False, inplace=False)
-    sns.distplot(gross_sorted.dropna())
+    sns.distplot(gross_sorted.dropna(), bins=70, hist_kws=dict(edgecolor="k", linewidth=1, color = 'b'))
     plt.plot([2e8, 2e8], plt.ylim(), 'r')
-    plt.title('Gross sorted')
+    plt.title('Gross value histogram')
+    plt.legend(['Histogram values', 'High profit threshold'])
     plt.show()
     # accroding to the histogram, we choose the high gross value to be 200 million and above
     df['is_blockbuster'] = df['gross'] > 0.2e9

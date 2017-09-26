@@ -11,7 +11,7 @@ def facebook_likes_over_the_years(df):
     plt.subplot(211)
     years = list(range(int(min(df['title_year'][~np.isnan(df['title_year'])])),
                        int(max(df['title_year'][~np.isnan(df['title_year'])]))))
-    sns.distplot(df['title_year'][~np.isnan(df['title_year'])])
+    sns.distplot(df['title_year'][~np.isnan(df['title_year'])],hist_kws=dict(edgecolor="k", linewidth=1, color = 'b'))
     plt.title('Title year histogram')
     plt.xlim(1900, 2020)
     plt.xlabel('')
@@ -21,7 +21,7 @@ def facebook_likes_over_the_years(df):
     for i in range(0, len(years)):
         likes[i] = df['movie_facebook_likes'][df['title_year'] == years[i]].mean()
     plt.subplot(212)
-    plt.scatter(years, likes)
+    plt.scatter(years, likes, color = 'b')
     plt.title('Average number of facebook likes over the years')
     plt.xlim(1900, 2020)
     plt.ylim(-1, max(likes) + 1e3)
@@ -33,8 +33,8 @@ def facebook_likes_over_the_years(df):
 
 def facebook_likes_to_score(df):
     np.random.seed(19680801)
-    colors = np.random.rand(len(df['imdb_score']))
-    plt.scatter(df['imdb_score'], df['movie_facebook_likes'], c=colors, alpha=0.5)
+    colors = np.random.rand(len(df['imdb_score']),3)
+    plt.scatter(df['imdb_score'], df['movie_facebook_likes'], c=colors, alpha=0.5, marker=(5, 2))
     plt.title('Facebook likes vs. score')
     plt.xlabel('IMDB score')
     plt.ylabel('Number of facebook likes')
@@ -44,7 +44,7 @@ def facebook_likes_to_score(df):
 
 def budget_to_score(df):
     np.random.seed(19680801)
-    colors = np.random.rand(len(df['imdb_score']))
+    colors = np.random.rand(len(df['imdb_score']),3)
     ratio = np.divide(df['gross'], df['budget'], out=np.zeros(len(df['gross'])), where=(df['budget'].replace([None], 0) != 0))
     # for i in range(0,5000,100):
     #     print(['gross= ',list(df['gross'])[i], ' budget= ', list(df['budget'])[i], ' ratio= ', list(ratio)[i]])

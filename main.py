@@ -80,6 +80,8 @@ test_error = [ridge_test_error, knn_test_error, bayes_test_error, svm_test_error
 col = {'Train Error': train_error,'Test Error': test_error}
 models = ['Ridge Regression', 'Knn', 'Bayesian Regression', 'SVM', 'Decision Tree']
 errors = pd.DataFrame(data=col, index=models)
-errors.plot(kind='bar')
+ax = errors.plot(kind='bar')
+for i, v in enumerate(errors):
+    ax.text(v + 3, i + .25, str(v), color='blue', fontweight='bold')
 plt.show()
 
